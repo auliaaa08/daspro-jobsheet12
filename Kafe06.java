@@ -27,25 +27,46 @@ public class Kafe06 {
         System.out.println("Silahkan pilih menu yang Anda inginkan.");
     }
 
-    public static int hitungTotalHarga(int pilihanMenu, int banyakItem) {
+    public static int hitungTotalHarga(int pilihanMenu, int banyakItem, String kodePromo) {
         int[] hargaItems = {15000, 20000, 22000, 12000, 10000, 18000};
 
         int hargaTotal = hargaItems[pilihanMenu - 1] * banyakItem;
-        return hargaTotal;
+        double diskon = 0;
+
+        if (kodePromo.equals("DISKON50")) {
+            diskon = 0.5 * hargaTotal;
+            System.out.println("Kode promo valid! Diskon 50%: Rp" + (int)diskon);
+        } else if (kodePromo.equals("DISKON30")) {
+            diskon = 0.3 * hargaTotal;
+            System.out.println("Kode promo valid! Diskon 30%: Rp" + (int)diskon);
+        } else {
+            System.out.println("Kode promo tidak valid!");
+        }
+
+        return (int)(hargaTotal - diskon);
     }
 
     public static void main(String[] args) {
     Menu("Budi", true, "DISKON30");
 
     Scanner sc = new Scanner(System.in);
+
+    int totalKeseluruhan = 0;
+    char lagi;
+
+    do {
+        System.out.print ("\nMasukkan nomor menu yang ingin Anda pesan: ");
+        int pilihanMenu = sc.nextInt();
+        System.out.print ("Masukkan jumlah item yang ingin dipesan: ");
+        int banyakItem = sc.nextInt();
+
+        int totalHarga = hitungTotalHarga(pilihanMenu, banyakItem, "DISKON30");
+        totalKeseluruhan += totalHarga;
+
+        System.out.print("Apakah Anda ingin memesan lagi? (y/n): ");
+        lagi = sc.next().charAt(0);
+    } while (lagi == 'y' || lagi == 'Y');
     
-    System.out.print ("\nMasukkan nomor menu yang ingin Anda pesan: ");
-    int pilihanMenu = sc.nextInt();
-    System.out.print ("Masukkan jumlah item yang ingin dipesan: ");
-    int banyakItem = sc.nextInt();
-
-    int totalHarga = hitungTotalHarga(pilihanMenu, banyakItem);
-
-    System.out.println ("Total harga menu untuk pesanan Anda: Rp" + totalHarga);
+    System.out.println("\nTotal keseluruhan harga pesanan Anda: Rp" + totalKeseluruhan);
     }
 }
